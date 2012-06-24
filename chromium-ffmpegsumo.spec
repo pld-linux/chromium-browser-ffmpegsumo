@@ -2,13 +2,13 @@
 # - Document how to make the source for this beast from the chromium checkout
 Summary:	Media playback library for chromium
 Name:		chromium-ffmpegsumo
-Version:	14.0.827.10
+Version:	17.0.963.46
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 URL:		http://www.chromium.org/
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	-
+# Source0-md5:	05fc44a7be5bd2e4edc2ee1247c55f80
 BuildRequires:	libvpx-devel
 BuildRequires:	yasm
 ExclusiveArch:	%{ix86} %{x8664}
@@ -60,10 +60,6 @@ rm -rf $RPM_BUILD_ROOT
 
 /sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
 
-#install -d $RPM_BUILD_ROOT%{_libdir}/chromium-browser
-#cd $RPM_BUILD_ROOT%{_libdir}/chromium-browser
-#ln -s ../libffmpegsumo.so.0.0.0 libffmpegsumo.so
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -75,7 +71,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE COPYING.LGPLv2.1
 %attr(755,root,root) %{_libdir}/libffmpegsumo.so.*.*.*
 %ghost %{_libdir}/libffmpegsumo.so.0
-#%{_libdir}/chromium-browser/libffmpegsumo.so
 
 %files devel
 %defattr(644,root,root,755)
