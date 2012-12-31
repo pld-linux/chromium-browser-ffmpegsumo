@@ -1,17 +1,19 @@
 # TODO
 # - Document how to make the source for this beast from the chromium checkout
 Summary:	Media playback library for chromium
-Name:		chromium-ffmpegsumo
-Version:	17.0.963.46
+Name:		chromium-browser-ffmpegsumo
+Version:	23.0.1271.95
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 URL:		http://www.chromium.org/
-Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	05fc44a7be5bd2e4edc2ee1247c55f80
+Source0:	chromium-ffmpegsumo-%{version}.tar.bz2
+# Source0-md5:	e79590af1e80c0833aacd20c15bae1aa
 BuildRequires:	libvpx-devel
+%ifarch %{ix86} %{x8664}
 BuildRequires:	yasm
-ExclusiveArch:	%{ix86} %{x8664}
+%endif
+ExclusiveArch:	%{ix86} %{x8664} %{arm}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -30,7 +32,7 @@ Requires:	%{name} = %{version}-%{release}
 Development headers and libraries for ffmpegsumo.
 
 %prep
-%setup -q
+%setup -qn chromium-ffmpegsumo-%{version}
 
 %build
 %{__make} \
@@ -39,6 +41,9 @@ Development headers and libraries for ffmpegsumo.
 %endif
 %ifarch %{x8664}
 	ARCH=x64 \
+%endif
+%ifarch %{arm}
+	ARCH=arm \
 %endif
 	CC="%{__cc}" \
 	OPTFLAGS="%{rpmcflags} %{rpmcppflags}" \
@@ -54,11 +59,17 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch %{x8664}
 	ARCH=x64 \
 %endif
+%ifarch %{arm}
+	ARCH=arm \
+%endif
 	libdir=%{_libdir} \
 	includedir=%{_includedir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
 /sbin/ldconfig -n $RPM_BUILD_ROOT%{_libdir}
+
+# HACK
+cp -p config/libavutil/avconfig.h $RPM_BUILD_ROOT%{_includedir}/ffmpegsumo/libavutil
 
 %clean
 rm -rf $RPM_BUILD_ROOT
